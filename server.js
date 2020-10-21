@@ -13,10 +13,19 @@ app.use(express.json());
 // Tables
 var tables = [];
 
+//waitlist
+const waitlist = [];
+
 // Routes
 app.get("/", function(req, res) {
-  res.sendFile(path.join(__dirname, "index.html"));
+  res.sendFile(path.join(__dirname, "./public/index.html"));
 });
+
+//delete tables 
+app.get("/clear", function(req, res){
+  tables = [];
+  res.sendFile(path.join(__dirname, "./public/index.html"))
+})
 
 // Displays all tables
 app.get("/api/tables", function(req, res) {
@@ -27,8 +36,12 @@ app.get("/api/tables", function(req, res) {
 app.post("/api/reserve", function(req, res) {
 
   var newTable = req.body;
-
-  tables.push(newTable);
+  if (tables.length>5){
+    waitlist.push(newTable);
+  } else {
+    tables.push(newTable);
+  }
+  
 
 });
 
